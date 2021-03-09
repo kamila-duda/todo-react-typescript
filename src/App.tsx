@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import "./App.css";
-import {Container, TextField, Button} from "@material-ui/core";
+import {Container} from "@material-ui/core";
+import TasksInput from "./components/TasksInput";
 import ContainedButtons from "./components/ContainedButtons";
 import {Todo} from "./types";
 
 function App() {
 
-  const [taskContent, setNewTask] = useState("");
+  
   const [hideDone, setHideDone] = useState(false);
   const [tasks, setTasks] = useState<Todo[]>([
     {
@@ -21,7 +22,7 @@ function App() {
     },
   ]);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  
 
   const toggleDone = (checkTaskId: number) => {
     setTasks((tasks) =>
@@ -34,16 +35,7 @@ function App() {
     );
   };
 
-  const addNewTask = (content: string) => {
-    setTasks((tasks) => [
-      ...tasks,
-      {
-        id: tasks.length === 0 ? 1 : tasks[tasks.length - 1].id + 1,
-        text: content,
-        done: false,
-      },
-    ]);
-  };
+  
 
   const setAllDone = () => {
     setTasks(tasks =>
@@ -54,34 +46,14 @@ function App() {
     )
   }
 
-  const onFormSubmit = (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (inputRef && inputRef.current) {
-      inputRef.current.focus();
-    }
-    if (taskContent.trim() === "") {
-      return;
-    }
-    addNewTask(taskContent.trim());
-    setNewTask("");
-  };
+  
+ 
 
   return (
     <Container fixed>
       <h1>Lista zadań</h1>
-      <form onSubmit={onFormSubmit}>
-        <TextField
-          id="outlined-basic"
-          label="Your task"
-          variant="outlined"
-          ref={inputRef}
-          value={taskContent}
-          onChange={({ target }) => setNewTask(target.value)}
-        />
-        <Button size="large" variant="contained" color="secondary" type="submit">
-          Dodaj zadanie
-        </Button>
-      </form>
+      <TasksInput setTasks={setTasks} tasks={tasks}/>
+     
       <div>
       {tasks.length > 0 && (
         <ContainedButtons tasks={tasks} setAllDone={setAllDone} setHideDone={setHideDone} hideDone={hideDone}/>        
