@@ -1,25 +1,33 @@
 import React, { useRef, useState } from "react";
 import "./App.css";
-import { Todo } from "./types";
 import {Container, TextField, Button} from "@material-ui/core";
+import ContainedButtons from "./components/ContainedButtons";
+import {Todo} from "./types";
 
 function App() {
+
   const [taskContent, setNewTask] = useState("");
+  const [hideDone, setHideDone] = useState(false);
   const [tasks, setTasks] = useState<Todo[]>([
     {
       id: 1,
-      text: "Test",
+      text: "Nauczyć się TypeScripta",
+      done: false,
+    },
+    {
+      id: 2,
+      text: "Napisać jeszcze raz todo listę",
       done: false,
     },
   ]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const toggleDone = (checkTask: Todo) => {
+  const toggleDone = (checkTaskId: number) => {
     setTasks((tasks) =>
       tasks.map((task) => {
-        if (task.id === checkTask.id) {
-          return { ...task, done: !checkTask.done };
+        if (task.id === checkTaskId) {
+          return { ...task, done: !task.done };
         }
         return task;
       })
@@ -36,6 +44,15 @@ function App() {
       },
     ]);
   };
+
+  const setAllDone = () => {
+    setTasks(tasks =>
+      tasks.map(task => ({
+        ...task,
+        done: true
+      }))
+    )
+  }
 
   const onFormSubmit = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,16 +78,20 @@ function App() {
           value={taskContent}
           onChange={({ target }) => setNewTask(target.value)}
         />
-        <Button variant="contained" color="secondary" type="submit">
+        <Button size="large" variant="contained" color="secondary" type="submit">
           Dodaj zadanie
         </Button>
       </form>
+      <div>
+      {tasks.length > 0 && (
+        <ContainedButtons tasks={tasks} setAllDone={setAllDone} setHideDone={setHideDone} hideDone={hideDone}/>        
+      )}
+    </div>
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>
-            <button onClick={() => toggleDone(task)}>X</button>
-            <p>{task.text}</p>
-            <span>{task.done ? "skończone" : "nieskończone"}</span>
+          <li className={hideDone && task.done ? "taskListItemHide" : "taskListItem"} key={task.id}>
+            <button className="taskToggleDone__button" onClick={() => toggleDone(task.id)}>{task.done ? "✔" : ""}</button>
+            <p className={task.done ? "taskContent--linethrough" : "taskContent"}>{task.text}</p>
           </li>
         ))}
       </ul>
