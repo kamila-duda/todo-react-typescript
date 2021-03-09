@@ -36,18 +36,22 @@ const TasksInput = ({ setTasks, tasks }: TasksInputProps) => {
 
   const useStyles = makeStyles({
     root: {
-      background: "#fff",
-      marginRight: "10px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
+    input: {
+      background: "#ffffff",
+      marginRight: "10px",
+      flexBasis: "60%",
+    }
   });
   const classes = useStyles();
 
   return (
-    <form onSubmit={onFormSubmit}>
+    <form className={classes.root} onSubmit={onFormSubmit} autoComplete="off">
       <TextField
-        classes={{
-          root: classes.root,
-        }}
+        className={classes.input}
         id="outlined-basic"
         label="Your task"
         variant="outlined"

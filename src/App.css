@@ -1,22 +1,27 @@
 .App {
   text-align: center;
 }
+.taskList{
+  padding: 0;
+}
 .taskListItem{
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 .taskListItemHide{
   display: none;
 }
 .taskContent{
   margin: 10px;
+  width: 70%;
+  border-bottom: 1px solid #ff0040;
 }
 .taskContent--linethrough{
-  margin: 10px;
   text-decoration: line-through;
 }
 .taskToggleDone__button{
   width: 30px;
   height: 30px;
   background-color: #fff;
+  cursor: pointer;
 }
